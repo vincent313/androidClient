@@ -12,19 +12,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ServiceTest">
         <activity
-            android:name="com.example.serviceTest.MainMenu"
+            android:name=".AddNewFriend"
             android:exported="false" />
         <activity
-            android:name="com.example.serviceTest.SignUpActivity"
+            android:name=".MainMenu"
+            android:exported="false" />
+        <activity
+            android:name=".SignUpActivity"
             android:exported="false" />
 
         <service
-            android:name="com.example.serviceTest.WebSocketService"
+            android:name=".WebSocketService"
             android:enabled="true"
             android:exported="true" />
 
         <activity
-            android:name="com.example.serviceTest.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.ServiceTest.NoActionBar">

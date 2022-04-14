@@ -1,5 +1,6 @@
 package com.example.serviceTest;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.BroadcastReceiver;
@@ -7,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +39,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         doRegisterReceiver();
 
     }
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -44,17 +47,19 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 JsonObject jsonObject = new JsonObject();
                 String username=((EditText)findViewById(R.id.singupusername)).getText().toString();
                 String password=((EditText)findViewById(R.id.signuppassword)).getText().toString();
-                String passwordMD5="";
-                try {
-                    passwordMD5= Utils.getMD5(password);
-                } catch (NoSuchAlgorithmException e) {
-                    break;
-                }
+                String passwordSha1="";
+                passwordSha1= Utils.getSha1(password);
                 JsonObject loginInfo=new JsonObject();
                 loginInfo.addProperty("type","signup");
                 loginInfo.addProperty("user",username);
-                loginInfo.addProperty("pas",passwordMD5);
-                 connection.sendMessage(loginInfo.toString());
+                loginInfo.addProperty("pas",passwordSha1);
+
+
+                try {
+                    connection.sendMessage(EncryptDecrypt.aesEncry(loginInfo.toString()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             default:
                 break;

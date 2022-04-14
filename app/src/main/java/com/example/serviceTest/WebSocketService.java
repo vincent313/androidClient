@@ -4,22 +4,30 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.google.gson.Gson;
 
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 
 public class WebSocketService extends Service {
-    String serverAddress ="ws://192.168.50.141:1102";
-    MyWebSocket client;
-    private myBinder  mBinder=new myBinder();
+    String serverAddress ="ws://192.168.50.141:1102"; //创建变量：指向服务器地址
+    MyWebSocket client; // 创建websocket 对象
+    private myBinder mBinder=new myBinder();
 
 
 class myBinder extends Binder {
@@ -59,16 +67,31 @@ class myBinder extends Binder {
             e.printStackTrace();
         }
         client =new MyWebSocket(url){
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onMessage(String message) {
-              //  Log.d("321",message);
-                Gson gson = new Gson();
-                Map<String,String> messageMap=gson.fromJson(message,Map.class);
-                Intent intent = new Intent();
-                intent.setAction(messageMap.get("type"));
-                intent.putExtra("message", message);
-               // Log.d("321",messageMap.get("type"));
-                sendBroadcast(intent);
+                try {
+                    String s=EncryptDecrypt.aesDecrypt(message);
+                    Log.d("tag","Server return message encrypted: "+message);
+                    Log.d("tag","Server return message encrypted: "+EncryptDecrypt.aesDecrypt(message));
+
+                    Gson gson = new Gson();
+                    Map<String,String> messageMap=gson.fromJson(s,Map.class);
+                    Intent intent = new Intent();
+                    intent.setAction(messageMap.get("type"));
+                    intent.putExtra("message", s);
+
+                    sendBroadcast(intent);
+                } catch (NoSuchPaddingException e) {
+                    e.printStackTrace();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (BadPaddingException e) {
+                    e.printStackTrace();
+                } catch (IllegalBlockSizeException e) {
+                    e.printStackTrace();
+                }
+
             }
         };
         new Thread() {
@@ -101,7 +124,7 @@ class WebSocketServiceConnection implements ServiceConnection {
             WebSocketService.myBinder binder=(WebSocketService.myBinder)iBinder;
             client=binder.getClient();
         }
-        Log.d("myservice","WebSocketService on Connected");
+
     }
 
     @Override
