@@ -19,7 +19,7 @@ import java.util.Map;
 public class WebSocketService extends Service {
     String serverAddress ="ws://192.168.50.141:1102";
     MyWebSocket client;
-    private myBinder mBinder=new myBinder();
+    private myBinder  mBinder=new myBinder();
 
 
 class myBinder extends Binder {

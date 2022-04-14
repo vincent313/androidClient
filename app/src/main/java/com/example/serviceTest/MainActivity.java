@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
@@ -20,6 +22,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private WebSocketServiceConnection connection= WebSocketServiceConnection.getInstance();
+
+
+    public MainActivity() {
+    }
 
     protected void onCreate(Bundle b){
 
@@ -31,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         stop.setOnClickListener(this);
         bindService();
         doRegisterReceiver();
+
 }
 
 // clear edit text
