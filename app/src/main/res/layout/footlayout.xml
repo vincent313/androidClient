@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    android:orientation="horizontal">
+
+
+    <ImageView
+        android:id="@+id/icon_message"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:onClick="ViewMessage"
+        app:srcCompat="@drawable/icon_message" />
+
+    <ImageView
+        android:id="@+id/icon_friend"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:onClick="ViewFriend"
+        app:srcCompat="@drawable/icon_friend" />
+
+    <ImageView
+        android:id="@+id/icon_profile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        app:srcCompat="@drawable/icon_profile" />
+
+    <ImageView
+        android:id="@+id/icon_setting"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        app:srcCompat="@drawable/icon_setting"
+        tools:ignore="OnClick" />
+</LinearLayout>
